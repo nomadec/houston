@@ -1,0 +1,43 @@
+<h1>Listing Ships</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.ship_index_path(@socket, :index)}>
+    <.live_component
+      module={HoustonWeb.ShipLive.FormComponent}
+      id={@ship.id || :new}
+      title={@page_title}
+      action={@live_action}
+      ship={@ship}
+      return_to={Routes.ship_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Mass</th>
+      <th>Max load</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="ships">
+    <%= for ship <- @ships do %>
+      <tr id={"ship-#{ship.id}"}>
+        <td><%= ship.name %></td>
+        <td><%= ship.mass %></td>
+        <td><%= ship.max_load %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.ship_show_path(@socket, :show, ship) %></span>
+          <span><%= live_patch "Edit", to: Routes.ship_index_path(@socket, :edit, ship) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: ship.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Ship", to: Routes.ship_index_path(@socket, :new) %></span>

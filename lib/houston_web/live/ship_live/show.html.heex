@@ -1,0 +1,36 @@
+<h1>Show Ship</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.ship_show_path(@socket, :show, @ship)}>
+    <.live_component
+      module={HoustonWeb.ShipLive.FormComponent}
+      id={@ship.id}
+      title={@page_title}
+      action={@live_action}
+      ship={@ship}
+      return_to={Routes.ship_show_path(@socket, :show, @ship)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @ship.name %>
+  </li>
+
+  <li>
+    <strong>Mass:</strong>
+    <%= @ship.mass %>
+  </li>
+
+  <li>
+    <strong>Max load:</strong>
+    <%= @ship.max_load %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.ship_show_path(@socket, :edit, @ship), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.ship_index_path(@socket, :index) %></span>
